@@ -65,7 +65,7 @@ names.forEach((name) => {
     addListItem(name);
 });
 
-buttonListAddElement.addEventListener("click", (event) => {
+function handleAddItem(event) {
     event.preventDefault();
 
     const inputValue = inputListAddElement.value.trim();
@@ -76,6 +76,13 @@ buttonListAddElement.addEventListener("click", (event) => {
 
     addListItem(inputValue);
     inputListAddElement.value = "";
+}
+
+buttonListAddElement.addEventListener("click", handleAddItem);
+inputListAddElement.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        handleAddItem(event);
+    }
 });
 
 
