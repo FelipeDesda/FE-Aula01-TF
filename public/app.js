@@ -31,74 +31,51 @@ ulElement.setAttribute("class", "list-names");
 //iNSERIR ENO NÓ DO CONTAINER PRINCIPAL DA ÁRVORE DOM
 sectionListElement.append(ulElement);
 
-
-names.forEach((name) => {
-    // Criar o elemento li, item de uma lista
-    const liElement = document.createElement("li");
-
-    // Adicionar um conteúdo texto no elemento li
-    liElement.innerText = name;
-
-    // Criar o botao excluir
+function createDeleteButton() {
     const buttonDeleteElement = document.createElement("button");
     buttonDeleteElement.innerHTML = "<strong>Excluir</strong>";
-    buttonDeleteElement.addEventListener("click", (event) => {
-        // Obter o elemento que acionou a ação (botão que foi clicado)
-        const currentTargetElement = event.currentTarget;
 
-        // Queremos obter o li, seu parent (pai)
+    buttonDeleteElement.addEventListener("click", (event) => {
+        const currentTargetElement = event.currentTarget;
         const liParentElement = currentTargetElement.parentElement;
 
-        // Remove o li
-        liParentElement.remove();
+        if (liParentElement) {
+            liParentElement.remove();
+        }
     });
 
-    liElement.append(" ", buttonDeleteElement);
+    return buttonDeleteElement;
+}
 
-    // Adicionar na árvore DOM, no nosso ul principal
+function addListItem(value) {
+    const trimmedValue = value.trim();
+
+    if (trimmedValue === "") {
+        return;
+    }
+
+    const liElement = document.createElement("li");
+    const buttonDeleteElement = createDeleteButton();
+
+    liElement.append(trimmedValue, " ", buttonDeleteElement);
     ulElement.append(liElement);
+}
+
+names.forEach((name) => {
+    addListItem(name);
 });
-
-
 
 buttonListAddElement.addEventListener("click", (event) => {
     event.preventDefault();
 
-    const inputValue = inputListAddElement.value;
+    const inputValue = inputListAddElement.value.trim();
 
     if (inputValue === "") {
         return;
     }
 
-    // Criar o elemento li, item de uma lista
-    const liElement = document.createElement("li");
-
-    const buttonDeleteElement = document.createElement("button");
-
-    // PODEMOS ADICIONAR O LISTENER NO ELEMENTO MESMO ADICIONANDO ELE NO DOM DEPOIS
-    buttonDeleteElement.addEventListener("click", (event) => {
-        // Obter o elemento que acionou a ação (botão que foi clicado)
-        const currentTargetElement = event.currentTarget;
-
-        // Queremos obter o li, seu parent (pai)
-        const liParentElement = currentTargetElement.parentElement;
-
-        // Remove o li
-        liParentElement.remove();
-    });
-
-
-    buttonDeleteElement.innerHTML = "<strong>Excluir</strong>";
-
-    // Adicionar um conteúdo texto no elemento li
-    liElement.append(inputValue, "  ", buttonDeleteElement);
-
-    // Adicionar na árvore DOM, no nosso ul principal
-    ulElement.append(liElement);
-
-    // resetar o valor do input
+    addListItem(inputValue);
     inputListAddElement.value = "";
-
 });
 
 
